@@ -11,7 +11,7 @@ def _dir(path):
 	if not os.path.isdir(path):
 		raise argparse.ArgumentTypeError('%s is not a directory' % path)
 	else:
-		return path
+		return os.path.normpath(path)
 
 def _strip(dirname):
 	dirname = re.sub(r'\s+\d+$', '', dirname)		
