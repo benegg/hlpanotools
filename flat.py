@@ -2,16 +2,17 @@
 
 import sys
 import os
+from os import path
 import re
 import base64
 import shutil
 import argparse
 
-def _dir(path):
-	if not os.path.isdir(path):
-		raise argparse.ArgumentTypeError('%s is not a directory' % path)
+def _dir(dirpath):
+	if not path.isdir(dirpath):
+		raise argparse.ArgumentTypeError('%s is not a directory' % dirpath)
 	else:
-		return os.path.normpath(path)
+		return dirpath
 
 def _strip(dirname):
 	dirname = re.sub(r'\s+\d+$', '', dirname)		
@@ -24,12 +25,12 @@ def _flat(src, dest, start, test):
 	for dirpath, dirnames, filenames in os.walk(src):
 		dir_created = False
 		for filename in filenames:
-			filepath = os.path.join(dirpath, filename)
-			d, f = os.path.split(filepath[len(src) + 1:])
+			filepath = path.join(dirpath, filename)
+			d, f = path.split(path.relpath(filepath, src))
 			d = _strip(d)
-			newdir = os.path.join(dest, '%03d_%s' % (i, base64.urlsafe_b64encode(d)))
-			newpath = os.path.join(newdir, f)
-			if not os.path.isdir(newdir):
+			newdir = path.join(dest, '%03d_%s' % (i, base64.urlsafe_b64encode(d)))
+			newpath = path.join(newdir, f)
+			if not path.isdir(newdir):
 				if not test:
 					os.makedirs(newdir)
 				dir_created = True
@@ -40,7 +41,7 @@ def _flat(src, dest, start, test):
 			i += 1
 
 def _defaut_out(src):
-	return '%s.flat' % os.path.normpath(src)
+	return '%s.flat' % path.normpath(src)
 
 def main():
 	parser = argparse.ArgumentParser(description='flat original directory')
