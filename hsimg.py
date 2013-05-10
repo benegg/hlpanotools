@@ -1,10 +1,13 @@
 #! /usr/bin/python
+# -*-coding:utf-8-*-
 
 import argparse
 import os
 import xlrd
 import json
 import codecs
+import sys
+import locale
 
 def main():
 	parser = argparse.ArgumentParser(description='gather hotspot image list')
@@ -19,6 +22,7 @@ def main():
 			image = sheet.cell_value(i, 2).strip()
 			if image:
 				images.add(image)
+	sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout)
 	for image in images:
 		print('hs%s.png' % image)
 
