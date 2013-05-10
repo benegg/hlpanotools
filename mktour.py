@@ -32,7 +32,7 @@ def _create_tmp(src, tmp):
 				num, b64name = basename[0:4], basename[4:]
 				try:
 					destname = base64.urlsafe_b64decode(b64name)
-					destname = num + destname.replace(os.path.sep, '>') + ext
+					destname = num + destname.replace(os.path.sep, '-') + ext
 				except TypeError:
 					pass
 			else:
