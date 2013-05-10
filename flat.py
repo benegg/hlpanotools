@@ -14,9 +14,14 @@ def _dir(dirpath):
 	else:
 		return dirpath
 
+def _strip_path(dirpath):
+	dirs = dirpath.split(os.path.sep)
+	stripdirs = [_strip(dir) for dir in dirs]
+	return os.path.sep.join(stripdirs)
+
 def _strip(dirname):
 	dirname = re.sub(r'\s+\d+$', '', dirname)		
-	if re.match(r'^\d+\s*$', dirname) is not None:
+	if re.match(r'^\d+\s*$', dirname) is None:
 		dirname = re.sub(r'^\d+\s*', '', dirname)
 	return dirname
 
@@ -27,7 +32,7 @@ def _flat(src, dest, start, test):
 		for filename in filenames:
 			filepath = path.join(dirpath, filename)
 			d, f = path.split(path.relpath(filepath, src))
-			d = _strip(d)
+			d = _strip_path(d)
 			newdir = path.join(dest, '%03d_%s' % (i, base64.urlsafe_b64encode(d)))
 			newpath = path.join(newdir, f)
 			if not path.isdir(newdir):

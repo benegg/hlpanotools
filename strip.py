@@ -8,7 +8,7 @@ def _strip(dir, test):
 	for dirpath, dirnames, filenames in os.walk(dir, topdown=False):
 		for dirname in dirnames:
 			dirname1 = re.sub(r'\s+\d+$', '', dirname)		
-			if re.match(r'^\d+\s*$', dirname1) is not None:
+			if re.match(r'^\d+\s*$', dirname1) is None:
 				dirname1 = re.sub(r'^\d+\s*', '', dirname1)
 			if (dirname1 != dirname) and not test:
 				os.rename(os.path.join(dirpath, dirname), os.path.join(dirpath, dirname1))
