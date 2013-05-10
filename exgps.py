@@ -1,5 +1,4 @@
 #! /usr/bin/python
-#coding=utf-8
 
 from xml.etree import ElementTree as et
 import argparse
