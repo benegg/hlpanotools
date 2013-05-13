@@ -81,7 +81,7 @@ def apply_mapping(dir, xls):
 				hs['image'] = 'hs%s.png' % image
 				print '%s <- %s' % (tname, hs['image'])
 		with codecs.open(jsonfile, 'w', encoding='utf8') as fp:
-			value = json.dumps(content, indent=4)
+			value = json.dumps(content, indent=4, separators=(',', ': '))
 			fp.write(value.decode('unicode-escape'))
 
 if __name__ == '__main__':
