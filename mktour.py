@@ -28,19 +28,20 @@ def _mktour(src, dest):
 def _create_tmp(src, tmp):
 	for dirpath, dirnames, filenames in os.walk(src):
 		for filename in filenames:
-			basename, ext  = os.path.splitext(filename)
-			destname = filename
-			if len(basename) > 4:
-				num, b64name = basename[0:4], basename[4:]
-				try:
-					destname = base64.urlsafe_b64decode(b64name)
-					destname = num + destname.replace(os.path.sep, '-') + ext
-				except TypeError:
-					pass
-			linkfrom = os.path.join(src, filename)
-			linkto = os.path.join(tmp, destname)
-			print '%s -> %s' % (linkfrom, linkto)
-			os.link(linkfrom, linkto)
+			if not filename.startswith('.'):
+				basename, ext  = os.path.splitext(filename)
+				destname = filename
+				if len(basename) > 4:
+					num, b64name = basename[0:4], basename[4:]
+					try:
+						destname = base64.urlsafe_b64decode(b64name)
+						destname = num + destname.replace(os.path.sep, '-') + ext
+					except TypeError:
+						pass
+				linkfrom = os.path.join(src, filename)
+				linkto = os.path.join(tmp, destname)
+				print '%s -> %s' % (linkfrom, linkto)
+				os.symlink(linkfrom, linkto)
 
 def main():
 	print sys.path[0] 
@@ -51,6 +52,7 @@ def main():
 	ndir = os.path.normpath(args.dir)
 	tmp, dest = ndir + '.tmp', ndir + '.tour'
 	shutil.rmtree(tmp, ignore_errors=True)
+	shutil.rmtree(dest, ignore_errors=True)
 	os.mkdir(tmp)
 	_create_tmp(ndir, tmp)
 	_mktour(tmp, dest)

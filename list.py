@@ -13,6 +13,13 @@ def _dir(path):
 
 def _list(dir):
 	for dirpath, dirnames, filenames in os.walk(dir):
+		for filename in filenames:
+			if not filename.startswith('.'):
+				prefix = filename[0:3]
+				name, ext = os.path.splitext(filename[4:])
+				chname = base64.urlsafe_b64decode(name)
+				line = '%s %s' % (prefix, chname)
+				print(line)
 		for dirname in dirnames:
 			prefix = dirname[0:3]
 			chname = base64.urlsafe_b64decode(dirname[4:])
