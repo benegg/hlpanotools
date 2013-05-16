@@ -44,13 +44,13 @@ def _create_tmp(src, tmp):
 				os.symlink(linkfrom, linkto)
 
 def main():
-	print sys.path[0] 
 	parser = argparse.ArgumentParser(description='make pano tour')
 	parser.add_argument('-p', '--preview', action='store_true', help='open tour after making')
 	parser.add_argument('dir', type=_isdir, help='panorama directory')
 	args = parser.parse_args()
-	ndir = os.path.normpath(args.dir)
+	ndir = os.path.abspath(args.dir)
 	tmp, dest = ndir + '.tmp', ndir + '.tour'
+	tmp, dest = os.path.abspath(tmp), os.path.abspath(dest)
 	shutil.rmtree(tmp, ignore_errors=True)
 	shutil.rmtree(dest, ignore_errors=True)
 	os.mkdir(tmp)
