@@ -36,7 +36,7 @@ def _copy_shop_pic(dir, out, category, name):
 
 def _write_json(obj, jsonfile):
 	with codecs.open(jsonfile, 'w', encoding='utf-8') as fp:
-		escaped_content = json.dumps(obj, indent=4)
+		escaped_content = json.dumps(obj, indent=4, separators=(',', ': '))
 		fp.write(escaped_content.decode('unicode-escape'))
 
 def _extract_enter(dir, out, jsonfile):

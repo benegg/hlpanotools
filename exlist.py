@@ -50,7 +50,7 @@ def main():
 	d['items'] = items
 	jsonfile = os.path.join(args.outdir, 'buildings.json')
 	with codecs.open(jsonfile, 'w', encoding='utf-8') as fp:
-		escaped_content = json.dumps(d, indent=4)
+		escaped_content = json.dumps(d, indent=4, separators=(',', ': '))
 		fp.write(escaped_content.decode('unicode-escape'))
 
 if __name__ == '__main__':
