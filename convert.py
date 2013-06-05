@@ -52,7 +52,6 @@ def convert(dir, outdir, larger):
 		for surfix in surfixes:
 			src = os.path.join(dir, cube % surfix)
 			dest = '%s/%s_%s.jpg' % (outdir, prefix, surfix)
-			print src
 			shutil.copyfile(src, dest)
 
 def main():
