@@ -1,0 +1,151 @@
+PTStitcherNG 0.7b
+=================
+
+New Features:
+(1) Seaming and blending options are extended. The accessible parameters 
+and their defaults are tuned to resemble the PTGui-blender as closely as possible:
+The minimum pyramid level used for blending can now be selected (default: 3)
+which resembles the use of a feather tool. By default, the stitching seam
+is placed in the center of the overlap region. In previous 
+releases this worked only up to 256 pixel wide overlaps, now seam placement
+is reliable also for larger overlaps.
+
+(2) A simple seam editing scheme is added: A mask image can be created
+displaying all seams between contributing source images. This mask image may be edited
+in any graphics program (Photoshop, Gimp, ...), and later used as input
+for the stitching process. The mask may be reused if the same 
+input-image configuration is used (e.g. to hide parts of the panorama tripod head).
+The man-page has some more details. A tutorial
+article will be published later.
+
+(3) Support for output in Photoshop PSD and PSB (large document) format. See the
+documentation for details.
+
+(4) EXIF data are copied from first processed JPEG-image to output JPEG-image.
+
+(5) Source image location may now be specified as either fullpath or 
+relative to scriptlocation.
+
+(6) Rotation in EXIF data is supported (+/-90 degrees, only JPEG-input).
+
+(7) Two new projections for display of large field-of-views are added:
+The multiple-rectilinear format which I presented 2 years ago here
+<http://www.fh-furtwangen.de/~dersch>
+Usage will be explained in a separate documentation and tutorial.
+And the Panini format by Thomas Sharpless and Bruno Postle
+<http://wiki.panotools.org/The_General_Panini_Projection>
+Scripting parameters are identical to the Hugin-version.
+
+(8) An experimental content dependent seam optimizer is available (only
+non-Cuda version). It optimizes the placement of the seams for two steps of a few hundred scanlines
+in advance, then takes one of those steps. This procedure is repeated until 
+the image is processed. It is not as smart as the algorithms in
+Smartblend or Enblend which use global optimizations. Unfortunately,
+global optimizations are not feasible in PTStitcherNG since processing
+takes place in a streaming manner. As a consequence, early wrong decisions of the
+seam optimizer can not be corrected later and may result in desasters.
+
+(9) dcraw is included in the distribution to handle raw image formats.
+
+(10) Compatibility with PTGui-frontend improved: The #-imginactive-tag
+is honoured (i.e. images excluded in the "create panorama"-dialog of PTGui)
+and the blend-priority setting can be used to shift the seams (similar
+but not exactly by the same amount as PTGui).
+
+(11) To clean up the interface: Blending over zenith/nadir as introduced in 0.6
+has caused some confusion. It is no longer default but has to be specified
+in the calling command (see man-page).
+
+PTStitcherNG 0.6b
+=================
+
+New features:
+(1) Blending over zenith and nadir. This is implemented by creating cap images and inserting
+them at the end of the stitching process. It is transparently enabled when stitching
+spherical panos, and can be controlled by command line switches.
+
+(2) Inverse mode added, i.e. a panorama file can be supplied and all partial
+"source" images specified in the script are created. All sensible options are 
+supported in reverse mode including all warp transformations, radial distortions 
+and perspective transformations. There are numerous applications for this mode
+like creating cube faces, extracting sequences of images to be merged in motion images etc.
+Caution: read the warning in the docs before experimenting!
+
+(3) Viewpoint correction added (use PTGui-scriptsyntax). 
+
+Changed features:
+(1) Choosing "TIFF_m" as output format now disables the blender.The output file consists of
+a multiframe image with one remapped frame per input image. The frames are tagged with
+their offset coordinates in the global panoramic image.
+
+(2) Maximum blend level is increased to 10, default is still 8.
+
+(3) sinc/lanczos interpolators for 6x6 and 8x8 kernels added (in addition to the existing 16x16
+and 32x32 kernels).
+
+
+Bugfixes:
+
+- fix for negativ crops (caused black lines and bad blend).
+- sinc interpolators fixed on cuda platform, speed increase an all platforms.
+- radial distortion in inverse mode improved (more accurate).
+- black-line-at-wrap-joint bug fixed.
+
+  
+
+PTStitcherNG 0.5b
+
+changes to 0.4b
+- versions for Windows 7 (64 & 32 bit, cuda & non-cuda binaries). The
+  failure of the latest version 0.4b was due to a broken strdup implementation on
+  this platform, which crashes, if memory allocated using strdup (or _strdup)
+  is freed. Seems to be mingw-related.
+
+- implemented a new custom TIFF-writer to overcome the speed limit
+  on seek-challenged platforms. Standard (non-layered) TIFF is now written
+  as tiled image, which loads faster and as flat image in standard readers.
+  Speed for gigapixel panorama creation has further increased, and is high 
+  now on all platforms.
+
+- negative crop-parameters are supported for both orientations (horizontal/vertical).
+
+- the logic for selecting BigTIFF vs normal TIFF output has been changed: It can now be forced
+  by the script (add parameter "b1" to the TIFF specification like n"TIFF b1"). For standard
+  (non-layered, non-deferred) TIFF-output, PTStitcherNG automatically selects BigTIFF, if
+  the resulting image file size is too large for normal TIFF. 
+
+- output can now be set to stdout (command line switch "-o -"). This forces image format to ppm
+  overwriting any script settings, and enables option '-d' (deferred merging, to prevent seek operations
+  in the the output stream). A pipe may thus be setup to convert the panorama to any format.
+
+- corrected errors:  cpu-identification on startup, mixed dos/unix pathnames in wine
+
+- no Linux-version in this release althought Linux is the fastest platform for PTStitcherNG
+  for a given hardware. Will be included again in later releases. 
+
+- the release now contains all necessary installation files including the CUDA runtime
+  but excluding the CUDA driver.
+  
+  
+Changes to 0.3b
+
+- added second Mac-version for older OS-releases (MacOS Tiger 10.4)
+ 
+- compiled using SSE2 flag to support older processors, no noticeable slowdown.
+
+- changed order of math-transformations for compatibility with libpano13
+
+- added commandline option "-l num" to set pyramid level for blender (see manpage).
+
+- added commandline switch "-d" to force deferred-merging (see manpage).
+
+- bugfixes and many extensions in parser (width in o-line is handled
+  correctly, JPEG-options can be set, global PTGui-"dummyimage" is
+  parsed correctly); should now work with many
+  PTGui-projectfiles as well as old PtStitcher-projects.
+
+- an extension is added to the outputname, if it has none.  
+
+- The Windows version has been tested to work on XP. Vista and 7 
+  require setting Win98-compatibility mode.
+

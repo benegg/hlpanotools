@@ -1,0 +1,353 @@
+<HTML>
+<head>
+<TITLE> PTStitcherNG </TITLE>
+<style type="text/css">
+h1 { color:#6363A5; font-family:Arial,sans-serif; }
+h2 { color:#434385; font-family:Arial,sans-serif; }
+p  { color:#000000; font-family:Arial,sans-serif; }
+body { color:#000000; font-family:Arial,sans-serif; }
+a:link { color:#333385; text-decoration:underline; }
+</style>
+</head>
+<body bgcolor="#CCCCB0" >
+
+<table border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td style="background-color: rgb(150, 200, 215);" width="100" valign="top">
+</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td valign="top">
+<h1>PTStitcherNG 0.7b</h1>
+<p><b> Prof. Dr. H. Dersch - HFU Furtwangen </b>
+<br>
+March 6, 2010
+</p>
+<hr>
+
+<h2>Introduction</h2>
+<p>
+PTStitcherNG
+reads and transforms any number and type of input
+images, and combines them into one seamless panoramic image with
+larger field-of-view. Given enough input images, full spherical 360x180 degree
+views can be synthesized suitable for virtual-reality viewers or printing.
+Transformation parameters and names of the input images are read from a
+plain-text projectfile. The transformations consist of correcting distortions
+due to camera lenses, perspective tranlation and remapping to any of the
+usual panorama projections. Merging employs an eight level multiresolution 
+algorithm which hides seams even if the source images
+fit badly.  PTStitcherNG natively reads PPM, TIFF and JPEG images,
+and almost any raw or other format through plug-ins. 
+</p>
+<p>
+PTStitcherNG combines a panorama stitcher and multiresolution blender
+in one application. It is optimized for speed by using parallel processing
+(SIMD-instructions, multiple processor cores). The main novel
+feature is the tight coupling of the remapper and blender, with an optimized
+management of temporary data. This enables PTStitcherNG to keep all intermediate
+data and processed images in ram (in the case of the CUDA-version: in 
+gpu-ram) even when stitching hundreds of images to gigapixel sized 
+panoramas. As a result, no data have to be written to disk, 
+or reread from disk with corresponding  speed improvements. As an aside, this makes 
+PTStitcherNG perform fast 
+even on low profile host systems
+</p>
+<p>
+Some speedresults, obtained with my fastest platform
+(Intel Celeron 1.8GHz, 1 GByte ram, Nvidia GeForce GTX 285, OpenSUSE 11.1):
+</p>
+<p>
+3 x 11 MPixel ------->  18 MPixel equirect 2.1 sec 
+(the decimal point is correct)
+<br>
+For source images and project files see <a href="http://360image.de/test/smallfoot.htm">here</a>.
+</p>
+<p>
+337 x  6 MPixel ------->1433 MPixel cylinder 250 sec (4min 10 sec)
+<br>
+For source images and project files see <a href="http://hdview.at/speedtest/speedtest.zip">here</a>.
+</p>
+<p>
+The cellprocessor version (Playstation 3) has been discontinued: Recent decisions by Sony 
+(new PS3 without Linux) and IBM (dim future for the cellprocessor)
+made me switch to CUDA as one basis for PTStitcherNG.
+Friendly folks from Nvidia sent me one of their gpu-cards
+for evaluation. However, PTStitcherNG also runs very fast on plain vanilla
+current x86 systems. 
+</p>
+<p>
+PTStitcherNG is free software. No license is required to download and use it. 
+See the licenses for auxiliary components in the Licenses folder.
+</p>
+
+<h2>Installation</h2>
+<p>
+All versions of PTStitcherNG are copy-installed, i.e. the necessary program
+files are simply copied to a suitable location on your computer. No automatic
+"installer" corrupts your system by manipulating low-level settings.
+</p>
+<h3>Windows</h3>
+<p>
+The Windows version of PTStitcherNG has now been tested to work on Windows 7.
+Binaries for 32bit and 64bit platforms, with and without CUDA are provided.
+Use one of the files <i>PTStitcherNG_cuda.exe</i> or <i>PTStitcherNG.exe</i>.
+<i>PTStitcherNG.exe</i> should run as is, while
+the CUDA-version requires two libraries (dlls):
+The file <i>pano_cuda.dll</i> from the distribution,
+and Nvidias CUDA-runtime <i>cudart.dll</i> which is now
+included in the distribution. You also need Nvidias CUDA-driver
+(and, of course, a CUDA-capable grapics card):
+Download from <a href="http://www.nvidia.com/object/cuda_get.html">Nvidia</a>
+and install it.
+ 
+
+
+<h3>X86-MacOS</h3>
+<p>
+Only the non-CUDA version of PTStitcherNG is available for Macintoshs.
+Simply copy the files <i>PTStitcherNG</i> (the actual program) and the file <i>PTStitcherNG.app</i>
+(an AppleScript GUI-wrapper for PTStitcherNG) to your computer.
+
+The default PTStitcherNG application is compiled for MacOS 10.5 (Leopard). 
+There is no version for older versions of MacOS or PowerPC processors.
+</p>
+
+<h2>Extending PTStitcherNG</h2>
+<p>
+
+
+As is, PTStitcherNG reads TIFF, JPEG and PPM-images. Reading RAW and other
+formats is accomplished by external readers, which feed PPM-data to
+PTStitcherNG. Once setup, this is done automatically. On startup PTStitcherNG
+reads a textfile <i>PTImageReader.txt</i>, which contains fileextensions and program commands,
+see the example of the distribution. Download and install <a href="http://en.wikipedia.org/wiki/Dcraw">
+dcraw</a> for
+reading almost any RAW format, <i>pngtopnm</i> for reading PNG images, or
+any other of the <a href="http://netpbm.sourceforge.net/">netpbm</a> 
+utilities for almost any format. The distribution now includes dcraw. Just move
+it to the same folder as the PTStitcherNG executable together with the
+<i>PTImageReader.txt</i> file. Edit <i>PTImageReader.txt</i> to set special dcraw
+options, e.g. for using 16bit-pixels etc.
+</p>
+<p>
+PTStitcherNG writes TIFF (multilayer using "tiff_m" and single layer "tiff", see 
+scriptsyntax below),
+PPM ("ppm"), PSD / PSB and JPEG images. Pixelsize defaults to 3-byte RGB. The commandline
+option <i>-p</i> switches output format to 6-byte RGB (only PPM and TIFF). Large files
+exceeding 2GByte size can be written in PPM and (flat) TIFF-format, provided the operating
+system and file format permits it. In the case of TIFF-multilayer format, a filename
+with extension ".btf" or ".tf8" has to be used to force BigTIFF format on Linux and MacOS,
+the Windows-version supports multilayer format only for regular TIFFs. 
+</p>
+
+<h2>Using PTStitcherNG</h2>
+<p>
+
+PTStitcherNG can be run as standalone programs with minimal graphical user
+interface. Simply drag and drop a suitable projectfile (e.g. the <i>speedtest.pts</i>-files
+from the above mentioned speedtests) onto PTStitcher's icon (in the
+case of MacOS: onto PTStitcherNG.app's icon). You will be asked for a save-location,
+and PTStitcherNG will then proceed and convert the input images.
+</p>
+<p>
+PTStitcherNG can be run as a console application from the command line with many
+more options to finetune the conversion process. This might be used for 
+batch-processing large amounts of images using shell scripts. 
+See the man-page <i>ptstitcher_man.pdf</i>
+for details.
+</p>
+<p>
+Finally, PTStitcherNG can be registered  into
+one of the many graphical frontends to panorama tools, see the docs of your
+favorite system for details.
+</p>
+
+<h2>Examples</h2>
+<p>
+The distribution includes a small sample project which can be used to test
+the installation. Open the folder <i>test</i> and locate the file <i>project.txt</i>.
+Drag and drop this file onto PTStitcherNG's icon (on Macs: on PTStitcherNG.app's icon).
+PTStitcherNG should start up, ask for a save-location and convert the 6 images to
+a cylindrical panorama. Open the file <i>project.txt</i> with any plain-text editor,
+and change the settings to test other features, see the documentation on scripting syntax below.
+To run PTStitcherNG from the commandline, open a console window,
+navigate to the <i>test</i>-folder, and issue the command
+<br>
+<tt>..\win\PTStitcherNG.exe -o pano.tif Project.txt </tt> on Windows
+<br>
+<tt>../mac/PTStitcherNG -o pano.tif Project.txt </tt> on Macs
+<br>
+In this mode all commandline switches can be tested, see the PTStitcherNG manpage.
+</p>
+<p>
+For larger panoramas and to test image quality, download any of the speedtest
+examples mentioned above: 
+<a href="http://360image.de/test/smallfoot.htm">  18 megapixel sphere </a> or 
+<a href="http://hdview.at/speedtest/speedtest.zip"> 1433 megapixel cylinder </a>.
+</p>
+
+
+<h2>Projectfile</h2>
+<p>
+Projectfiles are plain-text files generated either by hand using any texteditor
+or (usually) using one of the panorama tools utilities for aligning images, e.g.
+PTOptimizer, which is integrated in most graphical frontends to panorama tools.
+A subset of PTStitcher  and PTGui scripting parameters is supported:
+<p>
+One line describing the output panoramic image:
+<br>
+<b>p &nbsp;  w</b><i>width</i> &nbsp; <b>h</b><i>height</i> &nbsp; 
+<b>f</b><i>projection</i> &nbsp; <b>v</b><i>field-of-view</i> &nbsp; <b>n</b><i>fileformat</i>
+<br>
+<i>projection</i> is one of 0 (rectilinear), 1 (cylinder), 2,4 (equirectangular),
+3 (spherical equidistant), 5,10 (spherical equisolid), 6 (spherical mirror). 
+Two formats provide perspectively corrected projections for large fields-of-views:
+The multiple-rectilinear format (11), for examples see
+<a href="http://www.fh-furtwangen.de/~dersch">here</a>, and the 
+<a href= "http://wiki.panotools.org/The_General_Panini_Projection">Panini-format </a> (19).
+Both require additional parameters which are documented in separate articles.
+
+
+<br>
+<i>fileformat</i> = PPM, PSD, PSB, JPEG, TIFF, TIFF_m (TIFF-multilayer). In the case of JPEG-ouput,
+the quality (<i>q</i>=0...100 and progressive-flag <i>g</i>=0,1 can be set in a quoted string like
+n"JPEG q95 g0". TIFF files are limited to approximately 2 Gigabyte filesize, except if the 
+BigTIFF extension is selected. This is done either in the script by
+specifying <i>b1</i> as option to TIFF or TIFF_m like n"TIFF b1". If standard, non-layered, 
+(and non deferred, see manpage) TIFF-output is selected, PTStitcherNG automatically chooses
+this format if image size exceeds this limit. However, not all current TIFF-readers are
+capable of decoding this extension correctly. 
+<br>
+Choosing TIFF_m (TIFF-multilayer) format disables the blender. The output file consists of
+a multiframe image with one remapped frame per input image. The frames are tagged with
+their offset coordinates in the global panoramic image. Using this option automatically
+disables blending over zenith/nadir (options -n and -z), and option -d (deferred merging).
+</p>
+<p>
+Some notes on Photoshop native formats (PSD - up to 30000 pixels wide, PSB - up to 300000 pixels wide):
+Both can be 8 or 16 bit color depths. In default mode a multilayer image is created with each
+layer hosting one fixed-length rectangular tile. This tiled scheme is choosen for fast reading
+and writing access, and has no resemblance to the original source images. If so desired
+it can be collapsed in Photoshop onto the backgound layer without any editing or blending.
+<br>
+When using the '-d' (deferred merging) option, a flat 
+image without layers is created. Note that as mentioned elsewhere, this option requires 
+buffering of the panoramic image in memory and may not work for very large images on a low
+RAM system.
+<br>
+The PSD- and PSB-formats have been tested to work in Photoshop CS4, but many third-party
+programs do not support them or only some of their features. The MacOS image previewer does
+not correctly display the multilayer variant, only the flat version. The gimp only recognizes
+PSD, not PSB images. Also, multilayer 16bit-colordepth images are not rendered correctly on
+this platform.
+</p>
+<p>
+and one line describing each input image:
+<br>
+<b>o &nbsp; y</b><i>yaw</i><b>&nbsp; p</b><i>pitch</i><b> &nbsp;r</b><i>roll</i>
+<b> &nbsp; w</b><i>width</i> &nbsp; <b>h</b><i>height</i> &nbsp; 
+<b>f</b><i>projection</i> &nbsp; <b>v</b><i>field-of-view</i> &nbsp; <b>n</b><i>filename</i>
+<b>a</b><i>a</i> &nbsp; <b>b</b><i>b</i> &nbsp; <b>c</b><i>c</i> &nbsp; 
+<b>d</b><i>d</i> &nbsp; <b>e</b><i>e</i> &nbsp; 
+<b>C</b><i>x<sub>left</sub>,x<sub>right</sub>,y<sub>top</sub>,y<sub>bottom</sub></i> &nbsp; 
+<b>S</b><i>x<sub>left</sub>,x<sub>right</sub>,y<sub>top</sub>,y<sub>bottom</sub></i>
+<br>
+<i>yaw</i>, <i>pitch</i> and <i>roll</i> specify angles to tilt, pan and rotate the images.
+<br>
+C and S options specify rectangles: C specifies new image dimensions (crop), all
+other parameters like field-of-view refer to these new dimensions, while S mereley selects an area by
+setting the alpha channel to zero outside.
+<br>
+<i>a,b,c</i> refer to polynomial coefficients for distortion corrections, and <i>d,e</i>
+shift the optical center of the image.
+<br>
+The <i>projection</i> parameter is almost identical
+to the panorama case, with one exception: 2 means spherical equidistant. The spherical
+formats 2 and 3 are identical except that the first variant converts a circular region
+while format 3 converts the whole image. The same holds for formats 5 and 10.
+<br>
+The line describing imagefiles in PTGui-<i>pts</i>-projectfiles
+<br>
+<b>#-imgfile</b> &nbsp; <i>width</i> &nbsp; <i>height</i> &nbsp; "<i>filename</i>"
+<br>
+is also accepted to support script-generating programs which
+do not supply the filenames for input images on the <b>o</b>-line (see above).
+PTStitcherNG requires the input image names in the script. They can not be supplied on the
+commandline as in old PTStitcher. Most other parameters are optional with the exceptions y,p,r.
+PTStitcherNG supports the global image description line termed "#-dummyimage" in 
+PTGui-projectfiles.
+Identical parameters for all images, e.g. field-of-view (v) or correction parameters 
+(a,b,c) can
+be specified as v=0 (meaning identical to the value of dummyimage Nr.0 ), a=0 b=0 etc.
+</p>
+<p>
+and one line describing global options:
+<br>
+<b>m &nbsp; i</b><i>intrepolator</i> 
+<br>
+with <i>interpolator</i> = 0(cubic, default),1 (spline 4x4), 2 (spline 6x6),
+3 (sinc 16x16), 4 (spline 8x8), 5 (bilinear), 6 (nearest neigthbor),
+7 (sinc 32x32), 8 (sinc 6x6), 9 (sinc 8x8).
+</p>
+<p>
+Viewpoint correction is supported using 
+<a href="http://www.ptgui.com/examples/vptutorial.html"> PTGui-<i>pts</i>-format</a>:
+<br>
+<b>#-viewpoint <i>Vx Vy Vz pan tilt</i></b>
+<br>
+This correction is a combination of lateral translation (Vx,Vy),
+size change (Vz), and two-axis rotation (pan, tilt).
+</p>
+
+<h2>Inverse Mode</h2>
+<p>
+Using the command option <i>-i name</i> instead of the usual <i>-o name</i>
+to specify the panorama image name switches PTStitcherNG into inverse mode.
+In this mode the panorama image must exist and all images specified 
+in o-lines are created. All sensible options are supported including
+all warp transformations, radial distortions and perspective transformations.
+The fileformat specification on the p-line (tiff/jpeg/etc) is applied to the output
+images. 
+<br>
+<b>Caution:</b> Using PTStitcherNG this way with an existing projectfile 
+previously used for panorama-<i>creation</i> overwrites all source images if they exist!
+</p>
+<p>
+There are numerous applications for this mode: Create 6 cubic faces
+from an equirectangular source for cubic panorama viewers with this script:
+<tt>
+<br>
+<br>
+p f2 v360 n"JPEG g0 q100"
+<br>
+<br>
+o f0 y0 r0 p0 v90 w1500 h1500 n"forward.jpg"
+<br>
+o f0 y90 r0 p0 v90 w1500 h1500 n"right.jpg"
+<br>
+o f0 y-90 r0 p0 v90 w1500 h1500 n"left.jpg"
+<br>
+o f0 y-180 r0 p0 v90 w1500 h1500 n"back.jpg"
+<br>
+o f0 y0 r0 p90 v90 w1500 h1500 n"up.jpg"
+<br>
+o f0 y0 r0 p-90 v90 w1500 h1500 n"down.jpg"
+</tt>
+<br>
+<br>
+Sequences of images to be merged in motion images can be extracted
+in a similar way to the 
+<a href="http://www.fh-furtwangen.de/%7Edersch/mp/MotionPanoramas.html">mpremap</a>
+ project.
+</p>
+<p><br>
+Copyright 2009, 2010&nbsp; Helmut Dersch
+<br>
+der@fh-furtwangen.de
+</p>
+</td>
+</tr>
+</table>
+
+</body>
+</html>

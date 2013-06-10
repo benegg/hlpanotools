@@ -1,0 +1,17 @@
+# Register imagereaders for PTStitcherNG
+# each line starts with the file extension to be covered by 
+# the plug-in, or '*' for all else
+# then follows the name + options to call the filter
+# and let it write PPM to stdout
+# the programs mentioned below are meant as examples
+# and are not included in the PTStitcherNG distribution.
+# PTStitcherNG prepends the command name with its own directory path,
+# i.e. the programs should reside in the same directory 
+# as PTSTitcherNG
+
+
+.png pngtopnm
+.gif giftopnm
+.ps  pstopnm -ppm 
+* dcraw -c 
+

@@ -1,0 +1,282 @@
+# ptGui project file
+
+
+
+#-encoding utf8
+
+#-pathseparator /
+
+#-fileversion 40
+
+#-previewwidth 1132
+
+#-previewheight 566
+
+#-vfov 180
+
+#-resolution 300
+
+#-fixaspect 1
+
+#-outputfile 
+
+#-ccdcrop 1.5339203377028
+
+#-hasbeenoptimized 1
+
+#-hvcpmode 1
+
+#-morphmode 2
+
+#-jpegparameters 100 0
+
+#-tiffparameters 8bit packbits alpha_assoc
+
+#-psdparameters 8bit packbits layered
+
+#-qtvrparameters 800 600 1 1000 70 0 0 -180 180 0 -90 90 90 10 120 1
+
+#-honorexiforientation 1
+
+#-exrparameters noalpha
+
+#-hdroutputhdrblended
+
+#-hdroutputtonemapped
+
+#-hdrfileformat hdr
+
+#-hdrmethod fuse
+
+#-hdrpsdparameters float none layered
+
+#-tonemapsettings 0 0 0.5 1 0 20 0 0 2 0.27 0.67 0.06
+
+#-fusesettings 0.5 0 0.2 0 0
+
+#-cameracurve 3.441228 -0.551975 0.294423 -0.09563199999999999 0.07213899999999999
+
+#-vignettingparams 
+
+#-wbexposure 0 0 0
+
+#-pmoptexposuremode auto
+
+#-pmoptvignettingmode enabled
+
+#-pmoptwbmode disabled
+
+#-pmoptflaremode disabled
+
+#-pmoptcameracurvemode auto
+
+#-exposurecorrection 0
+
+#-blendweight 100 100 100 100 100 100 100
+
+#-optviewpoint 0000000
+
+#-colorcorrectlayers
+
+#-useexif1
+
+#-batchbuilder_useexif 0
+
+#-stitcher ptstitcherng
+
+#-blender ptgui
+
+#-blenderfeather 0
+
+#-optimizer pano12
+
+#-interpolator lanczos2
+
+#-autocpdone
+
+#-imgrotate4444444
+
+#-cpinactive
+
+#-imginactive
+
+#-linktoprevious
+
+#-previewinactive
+
+#-outputcrop 0 1 0 1
+
+#-morphcp
+
+#-nooptcp
+
+#-alignsettings_generatecp 1
+
+#-alignsettings_optimize 1
+
+#-alignsettings_optimizeprealign 1
+
+#-alignsettings_straighten 1
+
+#-alignsettings_fit 1
+
+#-alignsettings_chooseprojection 1
+
+#-alignsettings_setoptimumsize 1
+
+#-alignsettings_limitsize 500
+
+#-alignsettings_optimizeexposure 0
+
+#-hdrsettings_defaultlinkmode nolink
+
+#-hdrsettings_donotask 0
+
+#-batchsettings_align 0
+
+#-batchsettings_stitch 1
+
+#-batchsettings_stitchonlyifcontrolpoints 1
+
+#-defaultprojectfilenamemode firstsourceimage
+
+#-defaultprojectfilename_custom " Panorama"
+
+#-defaultprojectfoldermode sourcefolder
+
+#-defaultprojectfolder_custom ""
+
+#-defaultpanoramafilenamemode asproject
+
+#-defaultpanoramafilename_custom ""
+
+#-defaultpanoramafoldermode projectfolder
+
+#-defaultpanoramafolder_custom ""
+
+#-userelativesourceimagepaths 0
+
+#-optimizeraskreinitialize 1
+
+#-applytemplate_lens 1
+
+#-applytemplate_imageparams 1
+
+#-applytemplate_crop 1
+
+#-applytemplate_mask 1
+
+#-applytemplate_panoramasettings 1
+
+#-applytemplate_projectsettings 1
+
+#-applytemplate_optimizer 1
+
+#-globalcrop 0 0 0 0 0 0 0 0.5
+
+#-theoreticalhfov 52.0098493575297
+
+#-rect_compression_x 0
+
+#-rect_compression_y 0
+
+#-cylindrical_compression_y 0
+
+#-transverse_cylindrical_compression_x 0
+
+#-vedutismo_compression_x 1
+
+#-transverse_vedutismo_compression_y 1
+
+#-stereographic_compression 1
+
+#-rectifisheye_compression 1
+
+# Panorama settings:
+
+p w8192 h4096 f2 v360 u20 n"JPEG g0 q100"
+
+m g1 i0 f0
+
+# input images:
+
+#-dummyimage
+
+# The following line contains a 'dummy image' containing some global parameters for the project
+
+o w1 h1 y0 r0 p0 v86.34526749611246 a0 b-0.09476520945296787 c0 f0 d0 e0 g0 t0
+
+#-imgfile 3264 4912 "/tmp/pano0.jpg"
+
+#-metadata 13 0.004 100 2013-06-07T11:10:29 3*8 0 0 1 98 * * * curve 16 * T
+
+#-viewpoint 0 0 0 0 0
+
+#-exposureparams 0 0 0 0
+
+o f0 y-120.9753815473969 r-1.641485600007655 p2.602408342975707 v=0 a=0 b=0 c=0 d=0 e=0 g=0 t=0
+
+#-imgfile 3264 4912 "/tmp/pano1.jpg"
+
+#-metadata 10 0.004 100 2013-06-07T11:07:28 3*8 0 0 1 98 * * * curve 16 * T
+
+#-viewpoint 0 0 0 0 0
+
+#-exposureparams 0 0 0 0
+
+o f0 y120.2254559006226 r0.1877489354495764 p1.043543603506606 v=0 a=0 b=0 c=0 d=0 e=0 g=0 t=0
+
+#-imgfile 3264 4912 "/tmp/pano2.jpg"
+
+#-metadata 13 0.004 100 2013-06-07T11:07:56 3*8 0 0 1 98 * * * curve 16 * T
+
+#-viewpoint 0 0 0 0 0
+
+#-exposureparams 0 0 0 0
+
+o f0 y-59.8512983894148 r0.7841681275406527 p1.993269875916382 v=0 a=0 b=0 c=0 d=0 e=0 g=0 t=0
+
+#-imgfile 3264 4912 "/tmp/pano3.jpg"
+
+#-metadata 11 0.004 100 2011-06-30T20:54:27 3*8 0 0 1 98 * * * curve 16 * T
+
+#-viewpoint 0 0 0 0 0
+
+#-exposureparams 0 0 0 0
+
+o f0 y60.06913504934202 r1.286786539438992 p2.365793135629957 v=0 a=0 b=0 c=0 d=0 e=0 g=0 t=0
+
+#-imgfile 3264 4912 "/tmp/pano4.jpg"
+
+#-metadata 13 0.004 100 2013-06-07T11:09:37 3*8 0 0 1 98 * * * curve 16 * T
+
+#-viewpoint 0 0 0 0 0
+
+#-exposureparams 0 0 0 0
+
+o f0 y-0.3570218259622817 r-0.1146997358288502 p0.383973392176955 v=0 a=0 b=0 c=0 d=0 e=0 g=0 t=0
+
+#-imgfile 3264 4912 "/tmp/pano5.jpg"
+
+#-metadata 11 0.004 100 2013-06-07T11:10:02 3*8 0 0 1 98 * * * curve 16 * T
+
+#-viewpoint 0 0 0 0 0
+
+#-exposureparams 0 0 0 0
+
+o f0 y-179.0444378035106 r-2.053835151307595 p0.7140732521431802 v=0 a=0 b=0 c=0 d=0 e=0 g=0 t=0
+
+#-imgfile 3264 4912 "/tmp/pano6.jpg"
+
+#-metadata 18 0.004 100 2013-06-07T11:07:31 3*8 1 0 1 -1 * * * curve 16 * T
+
+#-viewpoint 0 0 0 0 0
+
+#-exposureparams 0 0 0 0
+
+o f0 y-239.0246184526031 r1.215835815124848e-312 p89.9997934219175 v=0 a=0 b=0 c=0 d=0 e=0 g=0 t=0
+
+# optimizer:
+
+v v b y2 r2 p2 y3 r3 p3 y4 r4 p4 y5 r5 p5 y6 r6 p6 y7 r7 p7
+
