@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+# coding:utf-8
 
 import argparse
 import os
@@ -6,6 +7,7 @@ import base64
 import re
 import sys
 import codecs
+import locale
 
 def tobase64(string, reverse):
 	prefix, ext = '', ''
@@ -18,7 +20,8 @@ def tobase64(string, reverse):
 	return prefix + string + ext
 
 def main():
-	sys.stdout = codecs.getwriter('utf8')(sys.stdout)	
+	sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout)	
+	reload(sys)
 	parser = argparse.ArgumentParser(description='convert string to url safe base64')
 	parser.add_argument('string', help='string to convert')
 	parser.add_argument('-r', '--reverse', action='store_true', help='convert from base64')
