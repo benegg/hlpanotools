@@ -36,8 +36,12 @@ def _parse_dir(path):
 	for dirpath, dirnames, filenames in os.walk(path):
 		placemarks = []
 		for filename in filenames:
-			filepath = os.path.join(dirpath, filename)
-			placemarks.extend(_parse_file(filepath))	
+			if filename.startswith('.'):
+				print 'skip %s' % filename
+			else:	
+				print 'process %s' % filename
+				filepath = os.path.join(dirpath, filename)
+				placemarks.extend(_parse_file(filepath))	
 	return placemarks
 
 def _parse_placemarks(path):
