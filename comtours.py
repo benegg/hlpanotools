@@ -11,7 +11,6 @@ def comxml(src, dest):
 
 def combine(src, dest):
 	shutil.rmtree(dest, ignore_errors=True)
-	os.mkdir(dest)
 	os.system('cp -rv %s %s' % (src[0], dest))
 	destpanosdir = os.path.join(dest, 'panos')
 	destxml = os.path.join(dest, 'tour.xml')
