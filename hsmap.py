@@ -61,7 +61,7 @@ def apply_mapping(dir, xls):
 			if image is None:
 				print 'no image info for %s' % tname 
 			else:
-				hs['image'] = 'hs%s.png' % image
+				hs['image'] = '../hotspots/%s@2x.png' % image
 				print '%s <- %s' % (tname, hs['image'])
 		with codecs.open(jsonfile, 'w', encoding='utf8') as fp:
 			value = json.dumps(content, indent=4, separators=(',', ': '))
