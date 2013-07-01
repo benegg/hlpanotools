@@ -38,8 +38,8 @@ def convert(dir, outdir, smaller):
 			hotspot = dict()
 			hotspot['ath'] = float(hs.attrib['ath'])
 			hotspot['atv'] = float(hs.attrib['atv'])
-			hotspot['height'] = 0.08
-			hotspot['width'] = 0.08
+			#hotspot['height'] = 0.08
+			#hotspot['width'] = 0.08
 			linkedscene = hs.attrib['linkedscene']
 			hotspot['href'] = '%s.json' % get_scene_href(root, linkedscene)
 			hotspot['image'] = '';
