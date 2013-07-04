@@ -5,19 +5,30 @@ import os
 import shutil
 import argparse
 import base64
+import platform
 
 def _isdir(path):
 	if not os.path.isdir(path):
 		raise argparse.ArgumentTypeError('%s is not a directory' % path)
 	else:
 		return path
+
+def _get_krpano_path():
+	return os.path.join(sys.path[0], 'krpano', 'current')
+
+def _get_krpano_bin_path():
+	os_ = 'linux' if platform.uname()[0] == 'Linux' else 'mac'
+	bits = '64' if platform.architecture()[0] == '64bit' else '32'
+	return os.path.join(_get_krpano_path(), os_ + bits)
 	
 def _mktour(src, dest):
 	for dirpath, dirnames, filenames in os.walk(src):
 		[shutil.rmtree(os.path.join(dirpath, d)) for d in dirnames]
 		paths = ['"%s"' % os.path.join(dirpath, filename) for filename in filenames]	
-		scriptpath = sys.path[0]
-		cmd = '%s/krpanotools-1.16.1-mac64/kmakemultires %s/krpanotools-1.16.1-mac64/templates/vtour-normal.config %s' % (scriptpath, scriptpath, ' '.join(paths))
+		exe = os.path.join(_get_krpano_bin_path(), 'kmakemultires')
+		conf = os.path.join(_get_krpano_bin_path(), 'templates', 'vtour-normal.config')
+		panos = ' '.join(paths)
+		cmd = '%s %s %s' % (exe, conf, panos)	
 		print(cmd)
 		os.system(cmd)
 	normdir = os.path.normpath(dirpath)
