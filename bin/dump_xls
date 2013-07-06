@@ -6,24 +6,26 @@ import argparse
 import sys
 import codecs
 
-def dump(xls, isheet):
+def dump(xls, isheet, delimiter):
 	sys.stdout = codecs.getwriter('utf8')(sys.stdout)
 	wb = xlrd.open_workbook(xls)
 	st = wb.sheet_by_index(isheet)
 	for i in xrange(st.nrows):
+		cells = []
 		for j in xrange(st.ncols):
 			cell = st.cell_value(i, j)
 			if not cell:
 				cell = '<null>'
-			print cell,
-		print ''
+			cells.append(str(cell))
+		print delimiter.join(cells)
 
 def main():
 	parser = argparse.ArgumentParser(description='dump xls content')
 	parser.add_argument('xls', help='xls to dump')
 	parser.add_argument('-i', '--index', type=int, default=0, help='sheet index')
+	parser.add_argument('-d', '--delimiter', default=' ', help='delimiter')
 	args = parser.parse_args()
-	dump(args.xls, args.index)
+	dump(args.xls, args.index, args.delimiter)
 
 if __name__ == '__main__':
 	main()
